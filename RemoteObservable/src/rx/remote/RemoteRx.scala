@@ -23,7 +23,6 @@ import scala.util.Try
  */
 trait Task[T] extends rx.Observable[T] {
   def continueWith[S](f: Task[T] => S): Task[S]
-  def subscribe(f: Try[T] => Unit): Unit
   def result(): T
 }
 

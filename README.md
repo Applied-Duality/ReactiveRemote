@@ -3,6 +3,8 @@ ReactiveRemote
 
 Observables in the Cloud
 
+Declarations in Scala for now, just to ease the discussion.
+
 Task[T] is an explicit representation of an Observable that returns a single result.
 We don't use Future[T] since we want to cancel onComplete (subscribe).
 

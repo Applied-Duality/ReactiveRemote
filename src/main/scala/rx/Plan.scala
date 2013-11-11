@@ -25,25 +25,27 @@ package rx
  */
 trait Plan[In, Out] {
   type Repr[I, O] <: Plan[I, O]
-  def map[NewOut](f: Out => NewOut): Repr[In, NewOut] = ???
-  def mapWithIndex[NewOut](f: (Out, Long) => NewOut): Repr[In, NewOut] = ???
-  def collect[NewOut](f: PartialFunction[Out, NewOut]): Repr[In, NewOut] = ???
-  def filter(p: Out => Boolean): Repr[In, Out] = ???
-  def fold[Z](zero: Z)(f: (Z, Out) => Z): Repr[In, Z] = ???
-  def scan[Z](zero: Z)(f: (Z, Out) => Z): Repr[In, Z] = ???
-  def reduce(f: (Out, Out) => Out): Repr[In, Out] = ???
-  def reduceScan(f: (Out, Out) => Out): Repr[In, Out] = ???
-  def forall(p: Out => Boolean): Repr[In, Boolean] = ???
-  def exists(p: Out => Boolean): Repr[In, Boolean] = ???
-  def drop(n: Long): Repr[In, Out] = ???
-  def dropWhile(p: Out => Boolean): Repr[In, Out] = ???
-  def take(n: Long): Repr[In, Out] = ???
-  def takeWhile(p: Out => Boolean): Repr[In, Out] = ???
-  def contains(elem: Out): Repr[In, Boolean] = ???
-  def count(): Repr[In, Long] = ???
-  def distinct(): Repr[In, Out] = ???
-  def first(): Repr[In, Out] = ???
-  def last(): Repr[In, Out] = ???
-  def fallback(elem: Out): Repr[In, Out] = ??? // produces `elem` if input stream was empty
+  type Ret[I, O] = Repr[I, O] { type Repr[II, OO] <: Plan.this.Repr[II, OO] }
+  
+  def map[NewOut](f: Out => NewOut): Ret[In, NewOut] = ???
+  def mapWithIndex[NewOut](f: (Out, Long) => NewOut): Ret[In, NewOut] = ???
+  def collect[NewOut](f: PartialFunction[Out, NewOut]): Ret[In, NewOut] = ???
+  def filter(p: Out => Boolean): Ret[In, Out] = ???
+  def fold[Z](zero: Z)(f: (Z, Out) => Z): Ret[In, Z] = ???
+  def scan[Z](zero: Z)(f: (Z, Out) => Z): Ret[In, Z] = ???
+  def reduce(f: (Out, Out) => Out): Ret[In, Out] = ???
+  def reduceScan(f: (Out, Out) => Out): Ret[In, Out] = ???
+  def forall(p: Out => Boolean): Ret[In, Boolean] = ???
+  def exists(p: Out => Boolean): Ret[In, Boolean] = ???
+  def drop(n: Long): Ret[In, Out] = ???
+  def dropWhile(p: Out => Boolean): Ret[In, Out] = ???
+  def take(n: Long): Ret[In, Out] = ???
+  def takeWhile(p: Out => Boolean): Ret[In, Out] = ???
+  def contains(elem: Out): Ret[In, Boolean] = ???
+  def count(): Ret[In, Long] = ???
+  def distinct(): Ret[In, Out] = ???
+  def first(): Ret[In, Out] = ???
+  def last(): Ret[In, Out] = ???
+  def fallback(elem: Out): Ret[In, Out] = ??? // produces `elem` if input stream was empty
 }
 

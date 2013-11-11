@@ -29,10 +29,9 @@ sealed abstract class PurePlan[In, Out] extends Plan[In, Out] {
   def apply(elem: In): PurePlan[In, Out]
   def end(): immutable.Seq[Out]
 
-  override def filter(p: Out ⇒ Boolean): PurePlan[In, Out] = Filter(p, this)
-  override def fold[Z](z: Z)(f: (Z, Out) ⇒ Z): PurePlan[In, Z] = Fold(z, f, this)
-  override def map[NewOut](f: Out ⇒ NewOut): PurePlan[In, NewOut] = Map(f, this)
-
+  override def filter(p: Out ⇒ Boolean): Repr[In, Out] = Filter(p, this)
+  override def fold[Z](z: Z)(f: (Z, Out) ⇒ Z): Repr[In, Z] = Fold(z, f, this)
+  override def map[NewOut](f: Out ⇒ NewOut): Repr[In, NewOut] = Map(f, this)
 }
 
 abstract class ComposedPurePlan[In, T, Out](prev: PurePlan[In, T]) extends PurePlan[In, Out] {

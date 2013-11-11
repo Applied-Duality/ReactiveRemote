@@ -21,10 +21,9 @@ import org.scalatest.matchers.ShouldMatchers
 
 trait PlanSpec { this: WordSpec with ShouldMatchers =>
   
-  type R[I, O] <: Plan[I, O]
+  type R[I, O] <: Plan[I, O] { type Repr[I, O] = R[I, O] }
   
-  // couldn’t figure out how to make a recursive type declaration work, hence covered explicitly up to depth two
-  def testPlan(plan: => R[Int, Int] { type Repr[I, O] <: R[I, O] { type Repr[I, O] <: R[I, O] }}, mk: R[Int, String] => PlanRunner[Int, String]): Unit = {
+  def testPlan(plan: => R[Int, Int], mk: R[Int, String] => PlanRunner[Int, String]): Unit = {
     "mapped" should {
       "contain the right elements" in {
         val p = mk(plan.map(_.toString))

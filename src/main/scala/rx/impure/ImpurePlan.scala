@@ -46,13 +46,13 @@ abstract class RxPlan[In, Out] extends ImpurePlan[In, Out] { outer ⇒
   override def apply(elem: In): Unit = outerst(elem)
   override def end(): Unit = outerst.end()
 
-  override def filter(p: Out ⇒ Boolean): RxPlan[In, Out] = new Step[Out] {
+  override def filter(p: Out ⇒ Boolean): Repr[In, Out] = new Step[Out] {
     def transform = Filter(p, this)
   }
-  override def fold[Z](z: Z)(f: (Z, Out) ⇒ Z): RxPlan[In, Z] = new Step[Z] {
+  override def fold[Z](z: Z)(f: (Z, Out) ⇒ Z): Repr[In, Z] = new Step[Z] {
     def transform = Fold(z, f, this)
   }
-  override def map[NewOut](f: Out => NewOut): RxPlan[In, NewOut] = new Step[NewOut] {
+  override def map[NewOut](f: Out => NewOut): Repr[In, NewOut] = new Step[NewOut] {
     def transform = Map(f, this)
   }
 

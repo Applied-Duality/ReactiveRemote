@@ -25,6 +25,7 @@ trait ImpurePlan[In, Out] extends Plan[In, Out] with Sink[In] with HasSink[Out]
 
 trait HasSink[T] {
   protected[rx] def sink: Sink[T]
+  private[rx] def setSink(n: Sink[T])
 }
 
 trait Sink[T] {

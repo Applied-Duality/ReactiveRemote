@@ -12,28 +12,14 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- **/
+ */
 
 package rx
 
-trait AsyncObservable[+T] {
-  def subscribe(observer: AsyncObserver[T]): AsyncSubscription
+trait AsyncMonad[T] {
+
+  def flatMap[U](f: T => AsyncMonad[U]): AsyncMonad[U]
+  def run: AsyncObservable[T]
+  
 }
 
-trait AsyncObserver[-T] {
-  def onInit(subscription: AsyncSubscription): Unit
-  def onNext(element: T): Unit
-  def onComplete(): Unit
-  def onError(cause: Throwable): Unit
-}
-
-trait AsyncSubscription extends Subscription {
-  def requestNext(elements: Int): Unit
-}
-
-object AsyncObservable {
-  def error(cause: Throwable): AsyncObservable[Nothing] = ???
-  def from[T](elems: Iterable[T]): AsyncObservable[T] = ???
-  def just[T](elem: T): AsyncObservable[T] = ???
-  lazy val empty: AsyncObservable[Nothing] = ???
-}
